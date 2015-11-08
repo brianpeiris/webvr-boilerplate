@@ -155,7 +155,7 @@ ButtonManager.prototype.loadIcons_ = function() {
 
 module.exports = ButtonManager;
 
-},{"./emitter.js":4,"./modes.js":6,"./util.js":8}],2:[function(require,module,exports){
+},{"./emitter.js":4,"./modes.js":5,"./util.js":7}],2:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -541,7 +541,7 @@ function CardboardEnclosure(params) {
 
 module.exports = DeviceInfo;
 
-},{"./util.js":8}],4:[function(require,module,exports){
+},{"./util.js":7}],4:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -601,27 +601,6 @@ module.exports = Emitter;
  * limitations under the License.
  */
 
-var WebVRManager = require('./webvr-manager.js');
-
-window.WebVRConfig = window.WebVRConfig || {};
-window.WebVRManager = WebVRManager;
-
-},{"./webvr-manager.js":10}],6:[function(require,module,exports){
-/*
- * Copyright 2015 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 var Modes = {
   UNKNOWN: 0,
   // Not fullscreen, just tracking.
@@ -634,7 +613,7 @@ var Modes = {
 
 module.exports = Modes;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -757,7 +736,7 @@ RotateInstructions.prototype.loadIcon_ = function() {
 
 module.exports = RotateInstructions;
 
-},{"./util.js":8}],8:[function(require,module,exports){
+},{"./util.js":7}],7:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -819,7 +798,7 @@ Util.isLandscapeMode = function() {
 
 module.exports = Util;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -895,7 +874,7 @@ function getWakeLock() {
 
 module.exports = getWakeLock();
 
-},{"./util.js":8}],10:[function(require,module,exports){
+},{"./util.js":7}],9:[function(require,module,exports){
 /*
  * Copyright 2015 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -911,6 +890,7 @@ module.exports = getWakeLock();
  * limitations under the License.
  */
 
+var Emitter = require('./emitter.js');
 var ButtonManager = require('./button-manager.js');
 var CardboardDistorter = require('./cardboard-distorter.js');
 var DeviceInfo = require('./device-info.js');
@@ -996,6 +976,7 @@ function WebVRManager(renderer, effect, params) {
     this.button.on('fs', this.onFSClick_.bind(this));
     this.button.on('vr', this.onVRClick_.bind(this));
     this.button.on('back', this.onBackClick_.bind(this));
+    this.emit('initialized');
   }.bind(this));
 
   // Save the input device for later sending timing data.
@@ -1014,6 +995,8 @@ function WebVRManager(renderer, effect, params) {
   // Create the necessary elements for wake lock to work.
   this.wakelock = new Wakelock();
 }
+
+WebVRManager.prototype = new Emitter();
 
 /**
  * Promise returns true if there is at least one HMD device available.
@@ -1277,4 +1260,25 @@ WebVRManager.prototype.exitFullscreen_ = function() {
 
 module.exports = WebVRManager;
 
-},{"./button-manager.js":1,"./cardboard-distorter.js":2,"./device-info.js":3,"./modes.js":6,"./rotate-instructions.js":7,"./util.js":8,"./wakelock.js":9}]},{},[5]);
+},{"./button-manager.js":1,"./cardboard-distorter.js":2,"./device-info.js":3,"./emitter.js":4,"./modes.js":5,"./rotate-instructions.js":6,"./util.js":7,"./wakelock.js":8}],10:[function(require,module,exports){
+/*
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+var WebVRManager = require('./webvr-manager.js');
+
+window.WebVRConfig = window.WebVRConfig || {};
+window.WebVRManager = WebVRManager;
+
+},{"./webvr-manager.js":9}]},{},[10]);
